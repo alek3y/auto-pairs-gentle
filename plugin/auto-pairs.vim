@@ -63,6 +63,9 @@ if !exists('g:AutoPairsSmartQuotes')
   let g:AutoPairsSmartQuotes = 1
 endif
 
+if !exists('g:AutoPairsCompleteOnNonWords')
+  let g:AutoPairsCompleteOnNonWords = 0
+endif
 
 " Will auto generated {']' => '[', ..., '}' => '{'}in initialize.
 let g:AutoPairsClosedPairs = {}
@@ -140,6 +143,11 @@ function! AutoPairsInsert(key)
   " Ignore auto close ' if follows a word
   " MUST after closed check. 'hello|'
   if a:key == "'" && prev_char =~ '\v\w'
+    return a:key
+  end
+
+  " Ignore auto close if it precedes a word
+  if g:AutoPairsCompleteOnNonWords && after =~? '^\v\w'
     return a:key
   end
 
