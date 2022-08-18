@@ -67,6 +67,10 @@ if !exists('g:AutoPairsCompleteOnNonWords')
   let g:AutoPairsCompleteOnNonWords = 0
 endif
 
+if !exists('g:AutoPairsCompleteNewline')
+  let g:AutoPairsCompleteNewline = 1
+endif
+
 " Will auto generated {']' => '[', ..., '}' => '{'}in initialize.
 let g:AutoPairsClosedPairs = {}
 
@@ -112,7 +116,7 @@ function! AutoPairsInsert(key)
       end
 
       " Skip the character if closed pair is next character
-      if current_char == ''
+      if g:AutoPairsCompleteNewline && current_char == ''
         let next_lineno = line('.')+1
         let next_line = getline(nextnonblank(next_lineno))
         let next_char = matchstr(next_line, '\s*\zs.')
